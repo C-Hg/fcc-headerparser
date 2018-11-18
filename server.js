@@ -4,7 +4,10 @@
 // init project
 var express = require('express');
 var app = express();
-const port = process.env.PORT
+app.set('trust proxy', true);
+
+//enables dotenv file
+require('dotenv').config();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -19,14 +22,13 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-// your first API endpoint... 
+// headerparser API endpoint 
 app.get("/api/whoami", function (req, res) {
-  res.json({greeting: 'hello API'});
+  res.json({ipadress: req.ip, language: req.get("accept-language"), software: req.get("User-Agent")});
 });
 
 
-
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
